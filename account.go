@@ -330,10 +330,19 @@ func (ctx *AccountLoginContext) Authenticate() {
 		}
 	}
 	if valid {
-		uerr := user.Login(ctx.Request.UserAgent(), ctx.Request.RemoteAddr)
-		if uerr != nil {
-			ctx.Status(500)
-			return
+		rip := ctx.Request.Header.Get("X-Real-Ip")
+		if rip != "" {
+			uerr := user.Login(ctx.Request.UserAgent(), rip)
+			if uerr != nil {
+				ctx.Status(500)
+				return
+			}
+		} else {
+			uerr := user.Login(ctx.Request.UserAgent(), ctx.Request.RemoteAddr)
+			if uerr != nil {
+				ctx.Status(500)
+				return
+			}
 		}
 		// create a signer for rsa 256
 		t := jwt.New(jwt.GetSigningMethod("RS512"))

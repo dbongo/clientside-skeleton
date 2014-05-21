@@ -91,7 +91,7 @@ angular.module('account.controllers', [])
                 $scope.alerts = data.alerts;
                 $timeout(function () {
                     $state.go('home');
-                }, 5000);
+                }, 3000);
             })
             .error(function (data, status) {
                 $timeout(function () {

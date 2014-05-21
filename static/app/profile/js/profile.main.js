@@ -5,6 +5,7 @@ angular.module('profile',[
     .config(['$stateProvider', function ($stateProvider) {
         $stateProvider
             .state('profile', {
+                abstract: true,
                 url: '/profile',
                 template: '<ui-view/>'
             })
