@@ -1,0 +1,9 @@
+Hello {{.Name}} {{.Surname}},
+
+Welcome to {{.Host}}.
+Your account has been created. You may log in with the following password:
+{{.Password}}
+and this email address.
+
+Best regards,
+{{.Host}} team

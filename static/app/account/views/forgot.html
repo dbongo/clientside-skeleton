@@ -1,0 +1,25 @@
+<div class="container">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+    <form name="requestpasswordresetform" ng-submit="sendRequest()">
+       	<fieldset>
+            <legend>Forgot Password</legend>
+           	<div class="form-group" ng-class="requestpasswordresetform.email.$invalid?'has-error':'has-success'">
+                <label for="email" class="col-sm-2 control-label">Email</label>
+               	<div class="col-sm-10">
+                    <div class="input-group">
+                       	<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                        <input id="email" name="email" type="email" class="form-control" placeholder="Email" required ng-minlength="6" ng-model="user.email">
+                   	</div>
+                    <span class="help-block" ng-show="requestpasswordresetform.email.$pristine">Please enter your email address</span>
+                   	<span class="help-block" ng-show="requestpasswordresetform.email.$error.email">Please enter a valid email address</span>
+               	</div>
+           	</div>
+			<br><br>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                   	<button type="submit" class="btn btn-primary" ng-disabled="requestpasswordresetform.$invalid || disabled">Send Request</button>
+               	</div>
+           	</div>
+       	</fieldset>
+   	</form>
+</div>
