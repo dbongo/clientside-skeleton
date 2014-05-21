@@ -1,4 +1,6 @@
-# 1.
+# Clientside Skeleton
+
+## 1.
 
 ```
 cd keys
@@ -6,6 +8,14 @@ cd keys
 cd ..
 ```
 
-# 2.
+## 2.
+
+```
+cd static
+bower install
+cd ..
+```
+
+## 3.
 
 edit main.go
