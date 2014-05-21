@@ -43,18 +43,18 @@ angular.module('account', [
                 data: { title: 'Logout' },
                 controller: 'AccountLogout'
             });
+
+
     }])
-    .run(['$rootScope','$state','User', function($rootScope,$state,User){
+    .run(['$rootScope','$state', function($rootScope,$state){
         $rootScope.$on('$stateChangeStart',
             function(event, toState){
                 $rootScope.title = toState.data.title;
-                User.updateStatus();
-            });
+             });
         $rootScope.$on('Auth:Required', function() {
-            User.clear();
             $state.go('account.login');
         });
-        $rootScope.$on('Auth:StateChanged', function(){
-            $rootScope.user = User.getUser();
+        $rootScope.$on('$locationChangeStart',function(){
+            $rootScope.signed = !!window.sessionStorage.token;
         })
     }]);

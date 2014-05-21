@@ -40,10 +40,10 @@
                     <li class="dropdown">
                         <a href class="dropdown-toggle"><span class="glyphicon glyphicon-user"></span> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li ng-show="!user"><a ui-sref="account.login">Login</a></li>
-                            <li ng-show="!user"><a ui-sref="account.register">Register</a></li>
-                            <li ng-show="user"><a ui-sref="profile.me">Profile</a></li>
-                            <li ng-show="user"><a ui-sref="account.logout">Logout</a></li>
+                            <li ng-show="!$root.signed"><a ui-sref="account.login">Login</a></li>
+                            <li ng-show="!$root.signed"><a ui-sref="account.register">Register</a></li>
+                            <li ng-show="$root.signed"><a ui-sref="profile.me">Profile</a></li>
+                            <li ng-show="$root.signed"><a ui-sref="account.logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>

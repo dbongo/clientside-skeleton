@@ -107,6 +107,7 @@ func accountRoutes() {
 	router.Get("/user/{id:bsonid}", (*UserContext).FindId)
 
 	router.Get("/account/status", (*AccountContext).UserStatus)
+
 	router.Put("/account", (*AccountRegisterContext).Create)
 	router.Post("/account", (*AccountLoginContext).Authenticate)
 	router.Post("/account/logout", (*AccountContext).Logout)

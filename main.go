@@ -56,7 +56,7 @@ func main() {
 	accountCollections()
 	profileCollections()
 
-	router = spx.New(domain)
+	router = spx.New()
 	accountRoutes()
 	profileRoutes()
 
