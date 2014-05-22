@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/dalu/jwt"
 	"github.com/gomango/spx"
 	"io/ioutil"
