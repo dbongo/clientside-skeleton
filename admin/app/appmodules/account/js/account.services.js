@@ -5,6 +5,8 @@ angular.module('account.services', [])
                 config.headers = config.headers || {};
                 if ($window.sessionStorage.token) {
                     config.headers.Authorization = $window.sessionStorage.token;
+                } else if ($window.localStorage.token) {
+                    config.headers.Authorization = $window.localStorage.token;
                 }
                 return config;
             },

@@ -92,6 +92,7 @@ angular.module('account.controllers', [])
         $http.post('/api/v1/account/logout')
             .success(function (data) {
                 delete $window.sessionStorage.token;
+                delete $window.localStorage.token;
                 $scope.alerts = data.alerts;
                 $timeout(function () {
                     $state.go('home');
