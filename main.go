@@ -12,7 +12,7 @@ import (
 const (
 	mongodbHost     string = "localhost"
 	mongodbDatabase string = "cside"
-	domain          string = "skeleton.dev"
+	domain          string = "skeleton.dev"     // used for mails
 	privKeyPath            = "keys/app.rsa"     // openssl genrsa -out app.rsa keysize
 	pubKeyPath             = "keys/app.rsa.pub" // openssl rsa -in app.rsa -pubout > app.rsa.pub
 )
