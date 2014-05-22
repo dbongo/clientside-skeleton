@@ -1,0 +1,24 @@
+<div class="container">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+    <form name="resetpasswordform" ng-submit="resetPassword()">
+        <fieldset>
+            <legend>Reset Password</legend>
+            <div class="form-group" ng-class="resetpasswordform.token.$invalid?'has-error':'has-success'">
+                <label for="token" class="col-sm-2 control-label">Token</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                        <input id="token" name="token" type="text" class="form-control" placeholder="Token" required ng-minlength="52" ng-model="token.token">
+                    </div>
+                    <span class="help-block" ng-show="resetpasswordform.token.$invalid">Please enter the reset token</span>
+                </div>
+            </div>
+            <br><br>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary" ng-disabled="resetpasswordform.$invalid || disabled">Reset Password</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

@@ -352,8 +352,10 @@ func (ctx *AccountLoginContext) Authenticate() {
 		}
 		if ctx.Data.Rememberme {
 			t.Claims["exp"] = time.Now().Add(time.Hour * 24 * 30 * 12).Unix()
+			data["remember"] = true
 		} else {
-			t.Claims["exp"] = time.Now().Add(time.Hour * 3).Unix()
+			t.Claims["exp"] = time.Now().Add(time.Hour * 8).Unix()
+			data["remember"] = false
 		}
 		tokenString, terr := t.SignedString(signKey)
 		if terr != nil {

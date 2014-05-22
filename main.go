@@ -96,6 +96,7 @@ func userFromToken(t *http.Request) *UserClaim {
 	}
 }
 
+/*
 func CheckToken(tokenValue string) (bool, string) {
 	token, err := jwt.Parse(tokenValue, func(token *jwt.Token) ([]byte, error) {
 		// since we only use the one private key to sign the tokens,
@@ -125,3 +126,4 @@ func CheckToken(tokenValue string) (bool, string) {
 		return false, fmt.Sprintf("Token parse error: %v\n", err)
 	}
 }
+*/

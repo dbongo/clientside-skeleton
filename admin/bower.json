@@ -1,0 +1,26 @@
+{
+  "name": "skeleton",
+  "version": "0.0.0",
+  "authors": [
+    "Darko Luketic"
+  ],
+  "description": "ngSkeleton",
+  "main": "app/main.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "angular-sanitize": "~1.2.16",
+    "angular-ui-router": "~0.2.10",
+    "bootstrap": "~3.1.1",
+    "angular-bootstrap": "~0.11.0"
+  }
+}

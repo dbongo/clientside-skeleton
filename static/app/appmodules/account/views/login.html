@@ -1,0 +1,44 @@
+<div class="container">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+	<form name="loginform" role="form" class="form-horizontal" ng-submit="loginUser()">
+    	<fieldset>
+	        <legend>Sign in</legend>
+        	<div class="form-group" ng-class="loginform.email.$invalid?'has-error':'has-success'">
+	            <label for="email" class="col-sm-2 control-label">Email</label>
+            	<div class="col-sm-10">
+	                <div class="input-group">
+                    	<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+	                    <input id="email" name="email" type="email" class="form-control" placeholder="Email" required ng-minlength="6" ng-model="user.email">
+                	</div>
+	                <span class="help-block" ng-show="loginform.email.$pristine">Please enter your email address</span>
+                	<span class="help-block" ng-show="loginform.email.$error.email">Please enter a valid email address</span>
+            	</div>
+        	</div>
+	        <div class="form-group" ng-class="loginform.password.$invalid?'has-error':'has-success'">
+            	<label for="password" class="col-sm-2 control-label">Password</label>
+	            <div class="col-sm-10">
+                	<div class="input-group">
+	                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
+	                    <input id="password" name="password" type="password" class="form-control" placeholder="Password" required ng-minlength="6" ng-model="user.password">
+	                </div>
+	                <span class="help-block" ng-show="loginform.password.$invalid">Please enter your password</span>
+	            </div>
+        	</div>
+        	<div class="form-group">
+	            <div class="col-sm-offset-2 col-sm-10">
+	                <div class="checkbox">
+	                    <label>
+                        	<input id="rememberme" name="rememberme" type="checkbox" checked ng-model="user.rememberme"> Remember me
+                    	</label>
+                	</div>
+            	</div>
+        	</div>
+	        <div class="form-group">
+            	<div class="col-sm-offset-2 col-sm-10">
+	                <button type="submit" class="btn btn-primary" ng-disabled="loginform.$invalid || disabled">Sign in</button>
+            	</div>
+        	</div>
+    	</fieldset>
+	</form>
+    <p><a ui-sref="account.forgot">Forgot your password?</a></p>
+</div>
