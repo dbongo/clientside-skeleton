@@ -1,5 +1,5 @@
 angular.module('account.controllers', [])
-    .controller("AccountRegister", ['$scope', '$http', '$timeout', '$state', function ($scope, $http, $timeout, $state) {
+    .controller("AccountRegister", ['$scope', '$http', '$timeout', '$state', function ($scope, $http, $timeout) {
         $scope.user = {
             name: "",
             surname: "",
@@ -16,13 +16,6 @@ angular.module('account.controllers', [])
                         type: "success",
                         msg: "An email to " + $scope.user.email + " has been sent. Please check your email account for login information."
                     });
-                    $scope.alerts.push({
-                        type: "info",
-                        msg: "You will be redirected to the login page in 30 seconds."
-                    });
-                    $timeout(function () {
-                        $state.go('account.login');
-                    }, 30000);
                 })
                 .error(function (data, status) {
                     $timeout(function () {
@@ -70,6 +63,7 @@ angular.module('account.controllers', [])
                 })
                 .error(function (data, status) {
                     delete $window.sessionStorage.token;
+                    delete $window.localStorage.token;
                     $timeout(function () {
                         $scope.disabled = false;
                     }, 3000);
@@ -158,7 +152,7 @@ angular.module('account.controllers', [])
                     $scope.alerts = data.alerts;
                     $timeout(function () {
                         $state.go('account.login');
-                    }, 5000);
+                    }, 3000);
                 })
                 .error(function (data, status) {
                     $timeout(function () {

@@ -65,7 +65,7 @@ func (ctx *ProfileContext) FindByUserId(id string) {
 			ctx.Status(400)
 			return
 		}
-		if u.Id != result.Id.Hex() && u.Role != "admin" {
+		if u.Id != result.User && u.Role != "admin" {
 			ctx.Status(403)
 			return
 		}

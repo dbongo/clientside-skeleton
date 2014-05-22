@@ -149,7 +149,7 @@ func (ctx *UserContext) Find() {
 	if u := userFromToken(ctx.Request); u != nil {
 		if u.Role == "admin" {
 			result := []User{}
-			cuser.Find(nil).Sort("name").All(&result)
+			cuser.Find(nil).Sort("email").All(&result)
 			ctx.JSON(result)
 			return
 		} else {

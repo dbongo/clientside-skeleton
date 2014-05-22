@@ -4,6 +4,7 @@
         <thead>
         <tr>
             <th>Email</th>
+            <th>Created</th>
             <th>Role</th>
             <th>Status</th>
             <th>Actions</th>
@@ -12,20 +13,21 @@
         <tbody>
         <tr ng-repeat="user in users.slice(((currentPage-1)*maxSize), ((currentPage)*maxSize)) track by $index">
             <td>{{user.email}}</td>
+            <td>{{user.created | date}}</td>
             <td ng-class="{warning: user.role == 'admin', success: user.role == 'user'}">{{user.role}}</td>
             <td ng-class="{success: user.status.condition == 'active',danger: user.status.condition == 'banned',info: user.status.condition == 'new'}">{{user.status.condition}}</td>
             <td>
                 <div class="btn-toolbar">
                     <div class="btn-group">
-                        <a class="btn btn-default" ui-sref="profile.edit({userid:user.id})"><span class="glyphicon glyphicon-eye-open"></span></a>
+                        <a class="btn btn-sm btn-default" ui-sref="profile.edit({userid:user.id})"><span class="glyphicon glyphicon-eye-open"></span></a>
                     </div>
                     <div class="btn-group">
-                        <a class="btn btn-warning"><span class="glyphicon glyphicon-hand-up"></span></a>
-                        <a class="btn btn-default"><span class="glyphicon glyphicon-hand-down"></span></a>
+                        <a class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-hand-up"></span></a>
+                        <a class="btn btn-sm btn-default"><span class="glyphicon glyphicon-hand-down"></span></a>
                     </div>
                     <div class="btn-group">
-                        <a class="btn btn-danger"><span class="glyphicon glyphicon-fire"></span></a>
-                        <a class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
+                        <a class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-fire"></span></a>
+                        <a class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
                     </div>
                 </div>
             </td>
