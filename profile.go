@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gomango/multicontext"
+	"github.com/gomango/context"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"time"
@@ -28,7 +28,7 @@ type (
 	}
 
 	ProfileContext struct {
-		multicontext.Context
+		context.Context
 		Data *Profile
 	}
 )
@@ -50,6 +50,10 @@ func (c *ProfileContext) DecodeJSON() {
 }
 
 func (ctx *ProfileContext) Me() {
+	if isBanned(ctx.Request) {
+		ctx.Status(419)
+		return
+	}
 	if u := userFromToken(ctx.Request); u != nil {
 		ctx.FindByUserId(u.Id)
 	} else {

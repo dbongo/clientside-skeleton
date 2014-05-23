@@ -13,22 +13,10 @@ angular.module('account.services', [])
             responseError: function (rejection) {
                 if ((rejection.status === 401) || (rejection.status === 403)) {
                     $rootScope.$broadcast('Auth:Required');
+                } else if (rejection.status === 419) {
+                    $rootScope.$broadcast('Auth:Forbidden');
                 }
                 return $q.reject(rejection);
             }
         }
     }]);
-/*
-    .factory('HttpInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
-        return {
-            // On response failure
-            responseError: function (rejection) {
-                if (canRecover(rejection)) {
-                    return responseOrNewPromise
-                }
-                // Return the promise rejection.
-                return $q.reject(rejection);
-            }
-        };
-    }]);
-    */

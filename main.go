@@ -2,9 +2,10 @@ package main
 
 import (
 	"github.com/dalu/jwt"
-	"github.com/gomango/spx"
+	"github.com/gomango/pux"
 	"io/ioutil"
 	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
 	"log"
 	"net/http"
 )
@@ -18,7 +19,7 @@ const (
 )
 
 var (
-	router             *spx.Router
+	router             *pux.Router
 	ms                 *mgo.Session
 	mdb                *mgo.Database
 	devmode            bool   = true
@@ -55,7 +56,7 @@ func main() {
 	accountCollections()
 	profileCollections()
 
-	router = spx.New()
+	router = pux.New()
 	accountRoutes()
 	profileRoutes()
 
@@ -92,6 +93,21 @@ func userFromToken(t *http.Request) *UserClaim {
 		}
 	} else {
 		return nil
+	}
+}
+
+func isBanned(r *http.Request) bool {
+	if u := userFromToken(r); u != nil {
+		user := new(User)
+		if err := cuser.FindId(bson.ObjectIdHex(u.Id)).One(user); err != nil {
+			return true
+		}
+		if user.AccountStatus.Condition == "banned" || user.AccountStatus.Condition == "permbanned" {
+			return true
+		}
+		return false
+	} else {
+		return true
 	}
 }
 

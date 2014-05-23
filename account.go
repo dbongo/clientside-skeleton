@@ -9,7 +9,7 @@ import (
 	"github.com/dalu/mail"
 	"github.com/dchest/authcookie"
 	"github.com/dchest/uniuri"
-	"github.com/gomango/multicontext"
+	"github.com/gomango/context"
 	"io"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
@@ -30,26 +30,26 @@ type (
 	}
 
 	UserContext struct {
-		multicontext.Context
+		context.Context
 		Data *User
 	}
 
 	AccountContext struct {
-		multicontext.Context
+		context.Context
 	}
 
 	AccountRegisterContext struct {
-		multicontext.Context
+		context.Context
 		Data *AccountRegister
 	}
 
 	AccountLoginContext struct {
-		multicontext.Context
+		context.Context
 		Data *AccountLogin
 	}
 
 	AccountResetContext struct {
-		multicontext.Context
+		context.Context
 		Data *AccountReset
 	}
 
@@ -84,6 +84,7 @@ type (
 
 	AccountStatus struct {
 		Condition string    `json:"condition"`
+		Bancount  int       `bson:",omitempty" json:bancount`
 		Since     time.Time `bson:",omitempty" json:"since"`
 		Until     time.Time `bson:",omitempty" json:"until"`
 	}
@@ -107,6 +108,7 @@ func accountRoutes() {
 	router.Get("/user/{id:bsonid}", (*UserContext).FindId)
 
 	router.Get("/account/status", (*AccountContext).UserStatus)
+	router.Post("/account/ban", (*AccountContext).BanUser)
 
 	router.Put("/account", (*AccountRegisterContext).Create)
 	router.Post("/account", (*AccountLoginContext).Authenticate)
@@ -190,6 +192,46 @@ func (ctx *UserContext) FindId(id string) {
 }
 
 // Account
+func (ctx *AccountContext) BanUser() {
+	if u := userFromToken(ctx.Request); u != nil {
+		if u.Role != "admin" {
+			ctx.Status(403)
+			return
+		}
+		if input, ok := ctx.Data.(map[string]interface{}); ok {
+			if userid, ok := input["userid"].(string); ok {
+				data := make(map[string]interface{})
+				alerts := make([]Alert, 0)
+				user := new(User)
+				if err := cuser.FindId(bson.ObjectIdHex(userid)).One(user); err != nil {
+					ctx.Status(500)
+					return
+				}
+				user.AccountStatus.Condition = "banned"
+				user.AccountStatus.Since = time.Now()
+				user.AccountStatus.Bancount++
+				user.AccountStatus.Until = time.Now().Add(48 * time.Hour * time.Duration(user.AccountStatus.Bancount))
+				if err := cuser.UpdateId(user.Id, user); err != nil {
+					alerts = append(alerts, Alert{"danger", "Could not ban user"})
+					data["alerts"] = alerts
+					ctx.Status(500)
+					ctx.JSON(data)
+					return
+				}
+				alerts = append(alerts, Alert{"success", "User was banned"})
+				data["alerts"] = alerts
+				ctx.JSON(data)
+			} else {
+				ctx.Status(400)
+				return
+			}
+		} else {
+			ctx.Status(401)
+		}
+	} else {
+		ctx.Status(500)
+	}
+}
 
 func (ctx *AccountContext) UserStatus() {
 	data := make(map[string]interface{})
@@ -308,16 +350,14 @@ func (ctx *AccountLoginContext) Authenticate() {
 	alerts := make([]Alert, 0)
 	ctx.Data.Email = strings.Trim(ctx.Data.Email, " ")
 	user := new(User)
-	err := cuser.Find(bson.M{"email": ctx.Data.Email}).One(user)
-	if err != nil {
+	if err := cuser.Find(bson.M{"email": ctx.Data.Email}).One(user); err != nil {
 		valid = false
 	} else {
 		// check if login allowed
 		if user.LoginAllowed() {
-			if valid = user.VerifyCredentials(ctx.Data.Email, ctx.Data.Password); valid == false {
-				uerr := user.FailLogin()
-				if uerr != nil {
-					log.Println("DANGER! Could not FailLogin()", uerr)
+			if valid = user.VerifyCredentials(ctx.Data.Email, ctx.Data.Password); !valid {
+				if err := user.FailLogin(); err != nil {
+					log.Println("DANGER! Could not FailLogin()", err, user.Id)
 				}
 			}
 		} else {
@@ -368,7 +408,7 @@ func (ctx *AccountLoginContext) Authenticate() {
 		}
 		data["token"] = tokenString
 	} else {
-		alerts = append(alerts, Alert{"danger", "Login not successful. Either a user with this email address doesn't exist or the email and password combination is wrong"})
+		alerts = append(alerts, Alert{"danger", "Login not successful."})
 		data["alerts"] = alerts
 		ctx.Status(400)
 	}
@@ -637,6 +677,18 @@ func (u *User) Login(ua, ip string) error {
 }
 
 func (u *User) LoginAllowed() bool {
+	if u.AccountStatus.Condition == "permbanned" {
+		return false
+	}
+	if u.AccountStatus.Condition == "banned" {
+		if time.Now().Before(u.AccountStatus.Until) {
+			return false
+		} else {
+			u.AccountStatus.Condition = "active"
+			u.AccountStatus.Since = time.Time{}
+			u.AccountStatus.Until = time.Time{}
+		}
+	}
 	if u.LoginStatus.FailedAttempts >= 3 {
 		if time.Since(u.LoginStatus.LastFailed) >= time.Minute*15 {
 			u.LoginStatus.FailedAttempts = 0

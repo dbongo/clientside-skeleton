@@ -46,12 +46,17 @@ angular.module('account', [
 
 
     }])
-    .run(['$rootScope','$state', function($rootScope,$state){
+    .run(['$rootScope','$state','$window', function($rootScope,$state,$window){
         $rootScope.$on('$stateChangeStart',
             function(event, toState){
                 $rootScope.title = toState.data.title;
              });
         $rootScope.$on('Auth:Required', function() {
+            $state.go('account.login');
+        });
+        $rootScope.$on('Auth:Forbidden', function() {
+            delete $window.sessionStorage.token;
+            delete $window.localStorage.token;
             $state.go('account.login');
         });
         $rootScope.$on('$locationChangeStart',function(){

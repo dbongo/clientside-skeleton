@@ -5,6 +5,7 @@
         <tr>
             <th>Email</th>
             <th>Created</th>
+            <th>Last Login</th>
             <th>Role</th>
             <th>Status</th>
             <th>Actions</th>
@@ -14,6 +15,7 @@
         <tr ng-repeat="user in users.slice(((currentPage-1)*maxSize), ((currentPage)*maxSize)) track by $index">
             <td>{{user.email}}</td>
             <td>{{user.created | date}}</td>
+            <td>{{user.loginstatus.lastlogin | date}}</td>
             <td ng-class="{warning: user.role == 'admin', success: user.role == 'user'}">{{user.role}}</td>
             <td ng-class="{success: user.status.condition == 'active',danger: user.status.condition == 'banned',info: user.status.condition == 'new'}">{{user.status.condition}}</td>
             <td>
