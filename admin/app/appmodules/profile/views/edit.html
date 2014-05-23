@@ -1,0 +1,92 @@
+<div class="container">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+    <form name="profileform" role="form" ng-submit="updateProfile()">
+        <fieldset>
+            <legend>Edit Profile</legend>
+            <input id="id" name="id" type="hidden" class="form-control">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="about">About</label>
+                    <textarea ng-model="profile.about" id="about" name="about" class="form-control" placeholder="Something about yourself"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label for="name">Name</label>
+                    <input ng-model="profile.name" id="name" name="name" type="text" class="form-control" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label for="surname">Surname</label>
+                    <input ng-model="profile.surname" id="surname" name="surname" type="text" class="form-control" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label for="birthday">Birthday</label>
+                    <datepicker ng-model="profile.birthday" id="birthday" name="birthday" show-weeks="false"></datepicker>
+                    <!--<input datepicker-popup="dd.MM.yyyy" ng-model="profile.birthday" id="birthday" name="birthday" type="text" class="form-control">-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label>Gender</label>
+                    <div class="form-control">
+                        <div class="radio-inline">
+                            <label>
+                                <input ng-model="profile.sex" id="sexm" name="sex" type="radio" value="Male"> Male
+                            </label>
+                        </div>
+                        <div class="radio-inline">
+                            <label>
+                                <input ng-model="profile.sex" id="sexf" name="sex" type="radio" value="Female"> Female
+                            </label>
+                        </div>
+                        <div class="radio-inline">
+                            <label>
+                                <input ng-model="profile.sex" id="sexh" name="sex" type="radio" value="Hybrid"> Hybrid
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label for="city">City</label>
+                    <input ng-model="profile.city" id="city" name="city" type="text" class="form-control" placeholder="City">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label for="country">Country</label>
+                    <input ng-model="profile.country" id="country" name="country" type="text" class="form-control" placeholder="Country">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label for="sexinterest">Interested in</label>
+                    <input ng-model="profile.sexinterest" id="sexinterest" name="sexinterest" type="text" class="form-control" placeholder="Men, Women, Both">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <label for="relationshipstatus">Relationship Status</label>
+                    <input ng-model="profile.relationshipstatus" id="relationshipstatus" name="relationshipstatus" type="text" class="form-control" placeholder="Single, Married, Divorced, you name it or not">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="signature">Signature</label>
+                    <textarea ng-model="profile.signature" id="signature" name="signature" class="form-control" placeholder="Signature, if any"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <br>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
